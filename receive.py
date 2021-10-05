@@ -12,7 +12,7 @@ else:
     portname = None  # Use default port
 
 try:
-    with mido.open_input(portname) as port:
+    with mido.open_input('loopMIDI Port 2') as port:
         print('Using {}'.format(port))
         print('Waiting for messages...')
         for message in port:

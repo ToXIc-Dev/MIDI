@@ -17,12 +17,18 @@ UDP_PORT_NO = 21324
 
 def _map(x, in_min, in_max, out_min, out_max):
     return int((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min)
-    
+
+def accept_notes(port):
+    """Only let note_on and note_off messages through."""
+    for message in port:
+        if message.type in ('note_on', 'note_off'):
+            yield message
+
 def update_esp8266(i,r,g,b):
 
     v = [
     1, # UDP Protocol 1 = WARLS, leave as is
-    30, # Timeout in secs for WLED before returning to normal mode, Use 255 to stay on the UDP data without a timeout until a request is requested via another method.
+    10, # Timeout in secs for WLED before returning to normal mode, Use 255 to stay on the UDP data without a timeout until a request is requested via another method.
     i, # LED Index
     r, # Red colour value
     g, # Green colur value
@@ -38,7 +44,7 @@ try:
     with mido.open_input('loopMIDI Port 2') as port:
         print('Using {}'.format(port))
         print('Waiting for messages...')
-        for message in port:
+        for message in accept_notes(port):
             print('Received {}'.format(message))
             #print(message.note)
             #print(message.velocity)
