@@ -20,7 +20,7 @@ def update_esp8266(i,r,g,b):
 
     v = [
     1, # UDP Protocol 1 = WARLS, leave as is
-    255, # Timeout in seconds for WLED before returning to normal mode, Use 255 to stay on the UDP data without a timeout until a request is requested via another method.
+    30, # Timeout in seconds for WLED before returning to normal mode, Use 255 to stay on the UDP data without a timeout until a request is requested via another method.
     i, # LED Index
     r, # Red colour value
     g, # Green colur value
