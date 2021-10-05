@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# This program gets the key from a MIDI device and send it to a WLED LED device to light up that specific LED
+# It is custom for my needs but you should be able to edit it to yours
 from __future__ import print_function
 import sys
 import mido
@@ -20,7 +22,7 @@ def update_esp8266(i,r,g,b):
 
     v = [
     1, # UDP Protocol 1 = WARLS, leave as is
-    30, # Timeout in seconds for WLED before returning to normal mode, Use 255 to stay on the UDP data without a timeout until a request is requested via another method.
+    30, # Timeout in secs for WLED before returning to normal mode, Use 255 to stay on the UDP data without a timeout until a request is requested via another method.
     i, # LED Index
     r, # Red colour value
     g, # Green colur value
@@ -40,7 +42,8 @@ try:
             print('Received {}'.format(message))
             #print(message.note)
             #print(message.velocity)
-            y = _map(message.note, 36, 96, 0, 60)
+            y = _map(message.note, 36, 96, 0, 60) # This is custom for my MIDI keyboard, I have a 61 key keyboard with a 58 LED strip, so the last 3 keys dont light up
+            print('LED Index {}'.format(y))
             if "note_on" in format(message):
                 #update_esp8266(y,random.randint(0, 255),random.randint(0, 255),random.randint(0, 255)) # Random colour
                 update_esp8266(y,255,0,0) # Red
